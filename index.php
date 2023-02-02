@@ -199,7 +199,7 @@ try {
             } else {
                 throw new Exception('Erreur de ma');
             }
-        }elseif($_GET['action'] === 'pdf'){
+        }elseif($_GET['action'] === 'pdf' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
                 $id_conges = $_GET['id_conges'];
@@ -235,7 +235,7 @@ try {
             } else {
                 throw new Exception('Erreur de ma');
             }
-        }elseif($_GET['action'] === 'logconnexion'){
+        }elseif($_GET['action'] === 'logconnexion' && $_SESSION['id_poste'] == 1){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
                 
