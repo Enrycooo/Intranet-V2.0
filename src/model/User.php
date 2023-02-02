@@ -89,6 +89,37 @@ class User_Model
             return $user;
         }
         
+        public function ConnectionLog(string $ip, string $username){
+            $stmt= $this->connection->getConnection()->prepare("
+                                                INSERT INTO log_connexion (date_connexion, ip_adress, username)
+                                                VALUES (CURRENT_TIMESTAMP(), :ip, :username)");
+            $stmt->bindValue(':username',$username);
+            $stmt->bindValue(':ip',$ip);
+            $affectedLines = $stmt->execute();
+
+            return ($affectedLines > 0);
+        }
+        
+        public function getCrudLog(){
+            $stmt = $this->connection->getConnection()->prepare("
+                                            SELECT id_log, date_connexion, ip_adress, username
+                                            FROM log_connexion");
+            $stmt->execute();
+            
+            $cruds = [];
+            while (($row = $stmt->fetch())) {
+                $crud = new User();
+                $crud->id_log = $row['id_log'];
+                $crud->date_connexion = $row['date_connexion'];
+                $crud->ip_adress = $row['ip_adress'];
+                $crud->username = $row['username'];
+
+                $cruds[] = $crud;
+            }
+
+            return $cruds;
+        }
+        
         public function getUserPerso(int $id_employe){
             $res= $this->connection->getConnection()->prepare("SELECT id_employe, nom, prenom, username, email, 
                                                             P.libelle AS poste, S.libelle AS service, conges_dispo

@@ -54,13 +54,6 @@ class CreateCongesAdmin
             $congesModel->connection = new DatabaseConnection();
             $success = $congesModel->createCongeAdmin($id_emp, $id_raison, $date_debut, $date_fin, $debut_type, $fin_type, $duree, $commentaire);
             
-            if($id_raison == 3){
-            }else{
-                $congesdispo = new Conges_Model();
-                $congesdispo->connection = new DatabaseConnection();
-                $congesdispo->DeleteCongesPris($id_employe, $duree);
-            }
-            
             if (!$success) {
                 throw new \Exception('Impossible d\'ajouter le conges !');
             } else {

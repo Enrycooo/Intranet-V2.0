@@ -63,15 +63,32 @@ class CrudConges
             if($input !== null){
                 $id_conges = null;
                 $id_etat = null;
+                $id_raison = null;
+                $duree = null;
+                $id_emp = null;
                 if (!empty($input['id_conges'])){
                     $id_conges = $input['id_conges'];
                     $id_etat = $input['id_etat'];
+                    if($id_etat == 3){
+                        $id_raison = $input['id_raison'];
+                        $duree = $input['duree'];
+                        $id_emp = $input['id_employe'];
+                    }
                 } else {
                     throw new \Exception('Les données du formulaire sont invalides.');
                 }
                 $conges_model = new Conges_Model();
                 $conges_model->connection = new DatabaseConnection();
                 $conges_model->changeEtat($id_conges, $id_etat);
+                
+                if($id_etat == 3){
+                    if($id_raison == 3){
+                    }else{
+                        $congesdispo = new Conges_Model();
+                        $congesdispo->connection = new DatabaseConnection();
+                        $congesdispo->DeleteCongesPris($id_emp, $duree);
+                    }
+                }
             }
         }
         

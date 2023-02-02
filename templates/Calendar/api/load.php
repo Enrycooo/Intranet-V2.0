@@ -5,7 +5,8 @@ include('db.php');
 $result = $conn->prepare("SELECT id_conges, date_debut, date_fin, EM.nom AS nom, EM.prenom AS prenom,
                         E.color AS color
                         FROM conges C INNER JOIN employe EM ON C.id_employe = EM.id_employe
-                        INNER JOIN etat E ON C.id_etat = E.id_etat");
+                        INNER JOIN etat E ON C.id_etat = E.id_etat
+                        WHERE afficher = 1");
 $result->execute();
 $res = $result->fetchALL(PDO::FETCH_OBJ);
 

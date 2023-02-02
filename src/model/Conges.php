@@ -109,7 +109,8 @@ class Conges_Model
         public function getCrudConges(){
                 $stmt= $this->connection->getConnection()->query("
                     SELECT id_conges, date_debut, date_fin, commentaire, duree, R.libelle AS raison, 
-                    E.libelle AS etat, EM.nom, EM.prenom, C.debut_type, C.fin_type, C.id_raison, C.id_etat
+                    E.libelle AS etat, EM.nom, EM.prenom, C.debut_type, C.fin_type, C.id_raison, C.id_etat,
+                    C.id_employe
                     FROM conges C INNER JOIN raison R ON C.id_raison=R.id_raison
                     INNER JOIN etat E ON C.id_etat = E.id_etat
                     INNER JOIN employe EM ON C.id_employe = EM.id_employe
@@ -134,6 +135,7 @@ class Conges_Model
                     $crud->fin_type = $row['fin_type'];
                     $crud->id_raison = $row['id_raison'];
                     $crud->id_etat = $row['id_etat'];
+                    $crud->id_employe = $row['id_employe'];
                     
                     $cruds[] = $crud;
                 }

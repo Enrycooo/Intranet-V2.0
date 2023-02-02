@@ -13,6 +13,20 @@
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <?php
+                    if($_SESSION['id_poste'] == 1){
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Log
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="index.php?action=logconnexion&id=<?=$id?>">connexion</a></li>
+                        </ul>
+                    </li>
+                    <?php
+                    }
+                    ?>
+                    <?php
                     if($_SESSION['id_poste'] !== 2){
                     ?>
                     <li class="nav-item dropdown">

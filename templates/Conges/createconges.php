@@ -96,7 +96,7 @@ function difference(){
           while (date1 < date2) {
             date1.setDate(date1.getDate() + 1);
 
-            // If day isn't a Sunday or Saturday, add to business days
+            // If day isn't a Sunday = 0 or Saturday = 6, add to business days
             if (date1.getDay() !== 6 && date1.getDay() !== 0) {
               ++days;
             }

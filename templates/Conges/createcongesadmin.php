@@ -1,5 +1,4 @@
 <?php ob_start();?>
-
 <div class="container-fluid px-4 py-2">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-6 text-center"><div class="card">
@@ -92,10 +91,11 @@ function treatAsUTC(date) {
 }
 
 function difference(){
-        var time = document.getElementById("time").selectedIndex;
-        var time2 = document.getElementById("time2").selectedIndex;
-        var date1 = new Date(document.getElementById('date_debut').value);
-        var date2 = new Date(document.getElementById('date_fin').value);
+            setTimeout(difference,1000);
+        var time = document.querySelector('#time').selectedIndex;
+        var time2 = document.querySelector('#time2').selectedIndex;
+        var date1 = new Date(document.querySelector('#date_debut').value);
+        var date2 = new Date(document.querySelector('#date_fin').value);
         var millisecondsPerDay = 24 * 60 * 60 * 1000;
         const diffDays = ((treatAsUTC(date2) - treatAsUTC(date1)) / millisecondsPerDay);
         
@@ -129,8 +129,8 @@ function difference(){
             days = (days - 0.5);
         }
         
-        document.getElementById('duration').value = days + 1;
-}
+        document.querySelector('#duration').value = days + 1;
+        }
 </script>
 <?php $content = ob_get_clean(); ?>
 

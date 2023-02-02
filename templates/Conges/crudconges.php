@@ -177,6 +177,9 @@
                         &nbsp;
                         <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                             <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                            <input type="hidden" name="id_raison" value="<?=$crud->id_raison?>">
+                            <input type="hidden" name="duree" value="<?=$crud->duree?>">
+                            <input type="hidden" name="id_employe" value="<?=$crud->id_employe?>">
                             <input type='hidden' name='id_etat' value='3'>
                             <button type="submit" class="btn btn-sm btn-success exclude-cell">Acceptée</button>
                             <input type="hidden" name="action" value="etat">
@@ -350,7 +353,7 @@
             date1.setDate(date1.getDate() + 1);
 
             // If day isn't a Sunday or Saturday, add to business days
-            if (date1.getDay() !== 6 && date1.getDay() !== 6) {
+            if (date1.getDay() !== 6 && date1.getDay() !== 0) {
               ++days;
             }
           }
@@ -366,7 +369,7 @@
             days = (days - 0.5);
         }
         
-        document.querySelector('#duration').value = days + 1;
+        document.querySelector('#duration').value = days;
         }
       });
     });

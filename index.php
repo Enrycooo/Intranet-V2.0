@@ -36,6 +36,7 @@ require_once('src/controllers/conges/createcongesadmin.php');
 require_once('src/controllers/perso/demandedeconges.php');
 require_once('src/controllers/perso/infoperso.php');
 require_once('src/controllers/users/historique_conges.php');
+require_once('src/controllers/log/log_connexion.php');
 
 use Application\Controllers\Login\Login;
 use Application\Controllers\Homepage\Homepage;
@@ -54,6 +55,7 @@ use Application\Controllers\CreateCongesAdmin\CreateCongesAdmin;
 use Application\Controllers\DemandeDeConges\DemandeConges;
 use Application\Controllers\InfoPerso\InfoPerso;
 use Application\Controllers\CrudHistorique\CrudHistorique;
+use Application\Controllers\CrudLog\CrudLog;
 
 
 try {
@@ -230,6 +232,15 @@ try {
                 
                 (new Navbar())->execute();
                 (new InfoPerso())->Info($id_employe);
+            } else {
+                throw new Exception('Erreur de ma');
+            }
+        }elseif($_GET['action'] === 'logconnexion'){
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                $id_employe = $_GET['id'];
+                
+                (new Navbar())->execute();
+                (new CrudLog())->Crud($id_employe);
             } else {
                 throw new Exception('Erreur de ma');
             }

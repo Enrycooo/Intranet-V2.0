@@ -15,11 +15,10 @@ class Login{
 	{
                 $username = null;
                 $password = null;
-                if (!empty($input['username']) && !empty($input['password'])) {
+                if (!empty($input['username']) && !empty($input['password'])) { 
                     //On vérifie les valeurs saisies dans les inputs de connexion
                     $username = $input['username'];
                     $password = crypt($input['password'],'$6$rounds=5000$gA6Fkf92AFMpn3cGK$');
-                    echo $password;
                 } else {
                     throw new \Exception('Les données du formulaire sont invalides.');
                 }
@@ -27,8 +26,11 @@ class Login{
                 $userModel->connection = new DatabaseConnection();
                 //Connexion à la BDD
                 $users = $userModel->getUser($username,$password);
-                //On envoie $username et $password à la fonction getUser et si la requête retourner
+                //On envoie $username et $password à la fonction getUser et si la requête retourne
                 //l'array souhaité, alors elle est stocké dans la variable $users
+                
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $userModel->ConnectionLog($ip, $username);
                 
                 if($users) // nom d'utilisateur et mot de passe correctes
                 {
