@@ -191,8 +191,9 @@ class Conges_Model
             return $calendars;
         }
         
+        //Cette fonction ne vas pas réellement supprimer le congés, mais vas plutôt le rendre visible uniquement par les admin du site
         public function deleteConges(int $id_conges){
-            $stmt = $this->connection->getConnection()->prepare("DELETE FROM conges WHERE id_conges = :id_conges");
+            $stmt = $this->connection->getConnection()->prepare("UPDATE conges SET afficher = 0 WHERE id_conges = :id_conges");
             $stmt->bindValue(':id_conges', $id_conges);
             $stmt->execute();
         }

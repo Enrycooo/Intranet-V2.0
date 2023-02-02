@@ -167,41 +167,41 @@
                     <td data-id="<?= $id_conges ?>"><?= $crud->nom ." ". $crud->prenom?></td>
                     <td>
                         <div class='d-flex text-center'>
-                        <button data-id="<?= $id_conges ?>" type="button" class="btn btn-sm btn-primary update exclude-cell" data-bs-toggle="modal" data-bs-target="#update">Modifier</button>
-                        &nbsp;
-                        <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
-                            <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
-                            <button type="submit" class="btn btn-sm btn-danger exclude-cell">Supprimer</button>
-                            <input type="hidden" name="action" value="delete">
-                        </form>
-                        &nbsp;
-                        <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
-                            <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
-                            <input type="hidden" name="id_raison" value="<?=$crud->id_raison?>">
-                            <input type="hidden" name="duree" value="<?=$crud->duree?>">
-                            <input type="hidden" name="id_employe" value="<?=$crud->id_employe?>">
-                            <input type='hidden' name='id_etat' value='3'>
-                            <button type="submit" class="btn btn-sm btn-success exclude-cell">Acceptée</button>
-                            <input type="hidden" name="action" value="etat">
-                        </form>
-                        &nbsp;
-                        <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
-                            <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
-                            <input type='hidden' name='id_etat' value='4'>
-                            <button type="submit" class="btn btn-sm btn-warning exclude-cell">Refusée</button>
-                            <input type="hidden" name="action" value="etat">
-                        </form>
-                        &nbsp;
-                        <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
-                            <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
-                            <input type='hidden' name='id_etat' value='5'>
-                            <button type="submit" class="btn btn-sm btn-warning exclude-cell">Annulée</button>
-                            <input type="hidden" name="action" value="etat">
-                        </form>
-                        &nbsp;
-                        <form action='index.php?action=pdf&id=<?=$id?>&id_conges=<?=$id_conges?>' method='post'>
-                              <button type='submit' class='btn btn-sm btn-primary exclude-cell'>Pdf</button>
-                        </form>
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <button type="submit" class="btn btn-sm btn-danger exclude-cell">Supprimer du calendrier</button>
+                                <input type="hidden" name="action" value="delete">
+                            </form>
+                            &nbsp;
+                            <button data-id="<?= $id_conges ?>" type="button" class="btn btn-sm btn-primary update exclude-cell" data-bs-toggle="modal" data-bs-target="#update">Modifier</button>
+                            &nbsp;
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <input type="hidden" name="id_raison" value="<?=$crud->id_raison?>">
+                                <input type="hidden" name="duree" value="<?=$crud->duree?>">
+                                <input type="hidden" name="id_employe" value="<?=$crud->id_employe?>">
+                                <input type='hidden' name='id_etat' value='3'>
+                                <button type="submit" class="btn btn-sm btn-success exclude-cell">Acceptée</button>
+                                <input type="hidden" name="action" value="etat">
+                            </form>
+                            &nbsp;
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <input type='hidden' name='id_etat' value='4'>
+                                <button type="submit" class="btn btn-sm btn-warning exclude-cell">Refusée</button>
+                                <input type="hidden" name="action" value="etat">
+                            </form>
+                            &nbsp;
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <input type='hidden' name='id_etat' value='5'>
+                                <button type="submit" class="btn btn-sm btn-warning exclude-cell">Annulée</button>
+                                <input type="hidden" name="action" value="etat">
+                            </form>
+                            &nbsp;
+                            <form action='index.php?action=pdf&id=<?=$id?>&id_conges=<?=$id_conges?>' method='post'>
+                                  <button type='submit' class='btn btn-sm btn-primary exclude-cell'>Pdf</button>
+                            </form>
                         </div>
                     </td>
                     <td class="exclude-cell" style="display:none;" data-id="<?= $id_conges ?>"><?= $crud->id_raison ?></td>
@@ -253,13 +253,6 @@
         });
     }
 
-    
-    function treatAsUTC(date) {
-        var result = new Date(date);
-        result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-        return result;
-    }
-    
     // Récupération des données de la cellule lorsque le bouton "Modifier" est cliqué
     var editButtons = document.querySelectorAll(".update");
 
@@ -327,50 +320,6 @@
         document.querySelector("#commentaire").value = cellData8;
         document.querySelector("#dataId").value = dataId;
         document.querySelector("#duration").value = cellData5;
-        
-        setTimeout(difference,1000);
-        
-        function difference(){
-            setTimeout(difference,1000);
-        var time = document.querySelector('#time').selectedIndex;
-        var time2 = document.querySelector('#time2').selectedIndex;
-        var date1 = new Date(document.querySelector('#date_debut').value);
-        var date2 = new Date(document.querySelector('#date_fin').value);
-        var millisecondsPerDay = 24 * 60 * 60 * 1000;
-        const diffDays = ((treatAsUTC(date2) - treatAsUTC(date1)) / millisecondsPerDay);
-        
-        // Get the difference in whole weeks
-        var wholeWeeks = diffDays / 7 | 0;
-
-        // Estimate business days as number of whole weeks * 5
-        var days = wholeWeeks * 5;
-
-        // If not even number of weeks, calc remaining weekend days
-        if (diffDays % 7) {
-          date1.setDate(date1.getDate() + wholeWeeks * 7);
-
-          while (date1 < date2) {
-            date1.setDate(date1.getDate() + 1);
-
-            // If day isn't a Sunday or Saturday, add to business days
-            if (date1.getDay() !== 6 && date1.getDay() !== 0) {
-              ++days;
-            }
-          }
-        }
-        
-        if(time === 1 && time2 === 0){
-            days = (days - 1);
-        }
-        if(time === 1 && time2 === 1){
-            days = (days - 0.5);
-        }
-        if(time === 0 && time2 === 0){
-            days = (days - 0.5);
-        }
-        
-        document.querySelector('#duration').value = days;
-        }
       });
     });
 </script>
