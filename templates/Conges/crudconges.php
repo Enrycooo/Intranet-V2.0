@@ -1,4 +1,6 @@
 <?php ob_start();?>
+
+
 <!-- Edit modal -->
 <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
@@ -104,11 +106,32 @@
           <h4 class="text-primary">Toutes les demandes de congés!</h4>
         </div>
         <div>
+            <form name="form4" action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                <select class="select form-control-lg" name="id_entite" id="entite">
+                        <option value="0" hidden>Choisissez une entité</option>
+                        <?php
+                        foreach($entites as $entite){
+                        ?>
+                        <option value="<?= $entite->id_entite ?>">
+                        <?= $entite->libelle ?></option>
+                        <?php
+                        } 
+                        ?>
+                        <option value='tous'>Toutes les entité</option>
+                     </select>
+                <input name='action' value='choose_entite' hidden>
+                <button class='btn btn-primary' type='submit'>Choisir cette entité</button>
+            </form>
+        </div>
+        <div>
             <a class="btn btn-danger" href="index.php?action=createCongesAdmin&id=<?=$id?>"><i class="fas fa-heart pe-2"></i>Ajouter un congés</a>
         </div>
       </div>
     </div>
     <hr>
+    <?php
+    if($cruds !== null){
+    ?>
     <center>
         <div class="form-check form-check-inline">
             <label class="form-check-label" for="inlineCheckbox1"><span class='badge bg-warning'>En attente</span></label>
@@ -188,10 +211,10 @@
                             ?>
                             &nbsp;
                             <button data-id="<?= $id_conges ?>" type="button" class="btn btn-sm btn-primary update exclude-cell" data-bs-toggle="modal" data-bs-target="#update">Modifier</button>
-                            &nbsp;
                             <?php
                             if($crud->id_etat == 2){
                             ?>
+                            &nbsp;
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type="hidden" name="id_raison" value="<?=$crud->id_raison?>">
@@ -211,6 +234,7 @@
                             <?php
                             }else if($crud->id_etat == 3){
                             ?>
+                            &nbsp;
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type="hidden" name="duree" value="<?=$crud->duree?>">
@@ -223,6 +247,7 @@
                             <?php
                             }else if($crud->id_etat == 4){
                             ?>
+                            &nbsp;
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type='hidden' name='id_etat' value='5'>
@@ -428,6 +453,7 @@ function exportData(){
         link.click();
 }
 </script>
-<?php $content = ob_get_clean(); ?>
+    <?php }
+    $content = ob_get_clean(); ?>
 
 <?php require('templates/layout.php') ?>

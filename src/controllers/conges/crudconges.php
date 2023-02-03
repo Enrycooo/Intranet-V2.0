@@ -6,11 +6,13 @@ require_once('src/lib/database.php');
 require_once('src/model/Conges.php');
 require_once('src/model/Etat.php');
 require_once('src/model/Raison.php');
+require_once('src/model/Entite.php');
 
 use Application\Lib\Database\DatabaseConnection;
 use Application\Model\Conges\Conges_Model;
 use Application\Model\Etat\Etat_Model;
 use Application\Model\Raison\Raison_Model;
+use Application\Model\Entite\Entite_Model;
 
 class CrudConges
 {
@@ -18,6 +20,7 @@ class CrudConges
         
         $id = $id_employe;
         $action = $_REQUEST["action"];
+        $cruds = null;
         
         if ($action === 'update') {
             if($input !== null){
@@ -111,11 +114,25 @@ class CrudConges
                     }
                 }
             }
+        }else if($action == 'choose_entite'){
+            if($input !== null){
+                $id_entite = null;
+                if(!empty($input['id_entite'])){
+                    $id_entite = $input['id_entite'];
+                } else {
+                    throw new \Exception('Les données du formulaire sont invalides.');
+                }
+                if($id_entite == 'tous'){
+                    $conges_model = new Conges_Model();
+                    $conges_model->connection = new DatabaseConnection();
+                    $cruds = $conges_model->getAllCrudConges();
+                }else{
+                    $conges_model = new Conges_Model();
+                    $conges_model->connection = new DatabaseConnection();
+                    $cruds = $conges_model->getCrudConges($id_entite);
+                }
+            }
         }
-        
-        $crudModel = new Conges_model();
-        $crudModel->connection = new DatabaseConnection();
-        $cruds = $crudModel->getCrudConges();
         
         $raison_model = new Raison_Model();
         $raison_model->connection = new DatabaseConnection();
@@ -124,6 +141,10 @@ class CrudConges
         $etat_model = new Etat_Model();
         $etat_model->connection = new DatabaseConnection();
         $etats = $etat_model->getEtats();
+        
+        $entite_model = new Entite_Model();
+        $entite_model->connection = new DatabaseConnection();
+        $entites = $entite_model->getEntites();
         
         if($_SESSION['id'] !== ""){
             require('templates/Conges/crudconges.php');

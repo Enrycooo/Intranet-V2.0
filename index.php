@@ -37,6 +37,7 @@ require_once('src/controllers/perso/demandedeconges.php');
 require_once('src/controllers/perso/infoperso.php');
 require_once('src/controllers/users/historique_conges.php');
 require_once('src/controllers/log/log_connexion.php');
+require_once('src/controllers/admin/crudentite.php');
 
 use Application\Controllers\Login\Login;
 use Application\Controllers\Homepage\Homepage;
@@ -56,6 +57,7 @@ use Application\Controllers\DemandeDeConges\DemandeConges;
 use Application\Controllers\InfoPerso\InfoPerso;
 use Application\Controllers\CrudHistorique\CrudHistorique;
 use Application\Controllers\CrudLog\CrudLog;
+use Application\Controllers\CrudEntite\CrudEntite;
 
 
 try {
@@ -168,6 +170,20 @@ try {
                 
                 (new Navbar())->execute();
                 (new CrudPoste())->CRUD($id_employe, $input);
+            } else {
+                throw new Exception('Erreur de ma');
+            }
+        }elseif($_GET['action'] === 'crudEntite' && $_SESSION['id_poste'] !== 2){
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                $id_employe = $_GET['id'];
+                
+                $input = null;
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $input = $_POST;
+                }
+                
+                (new Navbar())->execute();
+                (new CrudEntite())->CRUD($id_employe, $input);
             } else {
                 throw new Exception('Erreur de ma');
             }

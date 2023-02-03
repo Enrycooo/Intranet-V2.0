@@ -106,16 +106,61 @@ class Conges_Model
                 return $cruds;
         }
         
-        public function getCrudConges(){
-                $stmt= $this->connection->getConnection()->query("
+        public function getCrudConges(int $id_entite){
+                $stmt= $this->connection->getConnection()->prepare("
                     SELECT id_conges, date_debut, date_fin, commentaire, duree, R.libelle AS raison, 
                     E.libelle AS etat, EM.nom, EM.prenom, C.debut_type, C.fin_type, C.id_raison, C.id_etat,
-                    C.id_employe, afficher
+                    C.id_employe, afficher, EN.libelle AS entite
                     FROM conges C INNER JOIN raison R ON C.id_raison=R.id_raison
                     INNER JOIN etat E ON C.id_etat = E.id_etat
                     INNER JOIN employe EM ON C.id_employe = EM.id_employe
+                    INNER JOIN entite EN ON EM.id_entite = EN.id_entite
+                    WHERE EM.id_entite = :id_entite
                     ORDER BY date_demande DESC;
                     ");
+                
+                $stmt->bindParam(':id_entite', $id_entite);
+                $stmt->execute();
+                
+                $cruds = [];
+                while (($row = $stmt->fetch())) {
+                    $date_debut = date("d-m-Y H:i", strtotime($row['date_debut']));
+                    $date_fin = date("d-m-Y H:i", strtotime($row['date_fin']));
+                    $crud = new Conge();
+                    $crud->id_conges = $row['id_conges'];
+                    $crud->date_debut = $date_debut;
+                    $crud->date_fin = $date_fin;
+                    $crud->commentaire = $row['commentaire'];
+                    $crud->duree = $row['duree'];
+                    $crud->raison = $row['raison'];
+                    $crud->etat = $row['etat'];
+                    $crud->nom = $row['nom'];
+                    $crud->prenom = $row['prenom'];
+                    $crud->debut_type = $row['debut_type'];
+                    $crud->fin_type = $row['fin_type'];
+                    $crud->id_raison = $row['id_raison'];
+                    $crud->id_etat = $row['id_etat'];
+                    $crud->id_employe = $row['id_employe'];
+                    $crud->afficher = $row['afficher'];
+                    
+                    $cruds[] = $crud;
+                }
+                
+                return $cruds;
+        }
+        
+        public function getAllCrudConges(){
+                $stmt= $this->connection->getConnection()->prepare("
+                    SELECT id_conges, date_debut, date_fin, commentaire, duree, R.libelle AS raison, 
+                    E.libelle AS etat, EM.nom, EM.prenom, C.debut_type, C.fin_type, C.id_raison, C.id_etat,
+                    C.id_employe, afficher, EN.libelle AS entite
+                    FROM conges C INNER JOIN raison R ON C.id_raison=R.id_raison
+                    INNER JOIN etat E ON C.id_etat = E.id_etat
+                    INNER JOIN employe EM ON C.id_employe = EM.id_employe
+                    INNER JOIN entite EN ON EM.id_entite = EN.id_entite
+                    ORDER BY date_demande DESC;
+                    ");
+                $stmt->execute();
                 
                 $cruds = [];
                 while (($row = $stmt->fetch())) {

@@ -38,6 +38,7 @@
                             <li><a class="dropdown-item" href="index.php?action=crudService&id=<?=$id?>">Tous les services</a></li>
                             <li><a class="dropdown-item" href="index.php?action=crudPoste&id=<?=$id?>">Tous les postes</a></li>
                             <li><a class="dropdown-item" href="index.php?action=crudEtat&id=<?=$id?>">Tous les états</a></li>
+                            <li><a class="dropdown-item" href="index.php?action=crudEntite&id=<?=$id?>">Toutes les entités</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

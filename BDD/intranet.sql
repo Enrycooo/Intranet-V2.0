@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 01 fév. 2023 à 14:33
+-- Généré le : ven. 03 fév. 2023 à 15:48
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -39,16 +39,19 @@ CREATE TABLE `conges` (
   `debut_type` varchar(255) NOT NULL,
   `fin_type` varchar(255) NOT NULL,
   `duree` decimal(11,1) NOT NULL,
-  `commentaire` varchar(255) NOT NULL
+  `commentaire` varchar(255) NOT NULL,
+  `afficher` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `conges`
 --
 
-INSERT INTO `conges` (`id_conges`, `id_employe`, `id_raison`, `id_etat`, `date_demande`, `date_change`, `date_debut`, `date_fin`, `debut_type`, `fin_type`, `duree`, `commentaire`) VALUES
-(29, 2, 4, 4, '2023-02-01 08:46:42', '2023-02-01 09:54:11', '2023-02-06 08:00:00', '2023-02-10 19:00:00', 'Matin', 'Après-midi', '5.0', ''),
-(30, 1, 6, 3, '2023-02-01 08:50:55', '2023-02-01 09:54:08', '2023-02-11 14:00:00', '2023-02-18 13:00:00', 'Après-midi', 'Matin', '5.0', 'Je rentre en France');
+INSERT INTO `conges` (`id_conges`, `id_employe`, `id_raison`, `id_etat`, `date_demande`, `date_change`, `date_debut`, `date_fin`, `debut_type`, `fin_type`, `duree`, `commentaire`, `afficher`) VALUES
+(29, 2, 4, 4, '2023-02-01 08:46:42', '2023-02-01 09:54:11', '2023-02-06 08:00:00', '2023-02-10 19:00:00', 'Matin', 'Après-midi', '5.0', '', 1),
+(30, 1, 6, 5, '2023-02-01 08:50:55', '2023-02-03 09:16:47', '2023-02-11 14:00:00', '2023-02-18 13:00:00', 'Après-midi', 'Matin', '4.0', 'Je rentre en France', 1),
+(35, 1, 4, 3, '2023-02-02 09:11:52', '2023-02-02 14:39:33', '2023-02-07 08:00:00', '2023-02-16 13:00:00', 'Matin', 'Matin', '7.5', '', 0),
+(37, 1, 1, 2, '2023-02-03 09:21:14', '2023-02-03 09:54:33', '2023-02-06 08:00:00', '2023-02-10 13:00:00', 'Matin', 'Matin', '4.5', '', 1);
 
 -- --------------------------------------------------------
 
@@ -66,16 +69,17 @@ CREATE TABLE `employe` (
   `password` varchar(255) NOT NULL,
   `actif` tinyint(4) NOT NULL,
   `id_poste` int(11) NOT NULL,
-  `id_service` int(11) NOT NULL
+  `id_service` int(11) NOT NULL,
+  `conges_dispo` decimal(11,1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `employe`
 --
 
-INSERT INTO `employe` (`id_employe`, `nom`, `prenom`, `username`, `email`, `telephone`, `password`, `actif`, `id_poste`, `id_service`) VALUES
-(1, 'daniel', 'raphaël', 'rdaniel', 'daniel.rapahel@hotmail.fr', '0786140724', '$6$rounds=5000$gA6Fkf92AFMpn3cG$9GiHHvxdBUrBM9arT24l1cmX5fqWGVRygzcfSXEuMZYM32NWM.WnFtPCzMa73tryO26R29HJAE.irBsFgKVto.', 1, 1, 5),
-(2, 'Le Glaunec', 'Frederic', 'legfred', 'fleglaunec@landryavi.com', '41-19-03', '$6$rounds=5000$gA6Fkf92AFMpn3cG$LZD.VLd1Lb9p/a0GMitLX50C.KfhKPpXgQGIx3hAn/hCSNHSLN3ANdO1usvuPXWSc5yq1tBzDezi14k9OgFs11', 1, 3, 8);
+INSERT INTO `employe` (`id_employe`, `nom`, `prenom`, `username`, `email`, `telephone`, `password`, `actif`, `id_poste`, `id_service`, `conges_dispo`) VALUES
+(1, 'daniel', 'raphaël', 'rdaniel', 'daniel.rapahel@hotmail.fr', '0786140724', '$6$rounds=5000$gA6Fkf92AFMpn3cG$9GiHHvxdBUrBM9arT24l1cmX5fqWGVRygzcfSXEuMZYM32NWM.WnFtPCzMa73tryO26R29HJAE.irBsFgKVto.', 1, 1, 5, '30.0'),
+(2, 'Le Glaunec', 'Frederic', 'legfred', 'fleglaunec@landryavi.com', '41-19-03', '$6$rounds=5000$gA6Fkf92AFMpn3cG$LZD.VLd1Lb9p/a0GMitLX50C.KfhKPpXgQGIx3hAn/hCSNHSLN3ANdO1usvuPXWSc5yq1tBzDezi14k9OgFs11', 1, 3, 8, '30.0');
 
 -- --------------------------------------------------------
 
@@ -97,7 +101,62 @@ INSERT INTO `etat` (`id_etat`, `libelle`, `color`) VALUES
 (2, 'En attente', '#ff7800'),
 (3, 'Acceptee', '#007500'),
 (4, 'Rejetee', '#FF0000'),
-(5, 'Annulee', '#FF0000');
+(5, 'Annulee', '#000000');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `historique_conges`
+--
+
+CREATE TABLE `historique_conges` (
+  `id` int(11) NOT NULL,
+  `date_ajout` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `nb_ajouter` decimal(11,1) NOT NULL,
+  `motif` varchar(255) NOT NULL,
+  `id_admin` int(11) NOT NULL,
+  `id_employe` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `historique_conges`
+--
+
+INSERT INTO `historique_conges` (`id`, `date_ajout`, `nb_ajouter`, `motif`, `id_admin`, `id_employe`) VALUES
+(1, '2023-02-01 14:07:46', '5.0', 'Ancienneté', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `log_connexion`
+--
+
+CREATE TABLE `log_connexion` (
+  `id_log` int(11) NOT NULL,
+  `date_connexion` datetime NOT NULL,
+  `ip_adress` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `connection` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `log_connexion`
+--
+
+INSERT INTO `log_connexion` (`id_log`, `date_connexion`, `ip_adress`, `username`, `connection`) VALUES
+(1, '2023-02-02 09:25:13', '::1', 'rdaniel', '0'),
+(2, '2023-02-02 09:26:38', '::1', 'rdaniel', '0'),
+(3, '2023-02-02 09:28:36', '::1', 'legfred', '0'),
+(4, '2023-02-02 09:28:41', '::1', 'rdaniel', '0'),
+(5, '2023-02-02 09:45:12', '::1', 'rdaniel', '0'),
+(6, '2023-02-02 13:55:28', '::1', 'rdaniel', '0'),
+(7, '2023-02-03 08:45:44', '::1', 'rdaniel', '0'),
+(8, '2023-02-03 09:34:19', '::1', 'rdaniel', '0'),
+(9, '2023-02-03 09:37:42', '::1', 'rdaniel', 'failed'),
+(10, '2023-02-03 09:40:58', '::1', 'rdaniel', 'failed'),
+(11, '2023-02-03 09:41:23', '::1', 'rdaniel', 'success'),
+(12, '2023-02-03 09:41:40', '::1', 'rdaniel', 'failed'),
+(13, '2023-02-03 09:42:47', '::1', 'rdaniel', 'success');
 
 -- --------------------------------------------------------
 
@@ -195,6 +254,18 @@ ALTER TABLE `etat`
   ADD PRIMARY KEY (`id_etat`);
 
 --
+-- Index pour la table `historique_conges`
+--
+ALTER TABLE `historique_conges`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `log_connexion`
+--
+ALTER TABLE `log_connexion`
+  ADD PRIMARY KEY (`id_log`);
+
+--
 -- Index pour la table `poste`
 --
 ALTER TABLE `poste`
@@ -220,19 +291,31 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT pour la table `conges`
 --
 ALTER TABLE `conges`
-  MODIFY `id_conges` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_conges` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT pour la table `employe`
 --
 ALTER TABLE `employe`
-  MODIFY `id_employe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_employe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `etat`
 --
 ALTER TABLE `etat`
   MODIFY `id_etat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `historique_conges`
+--
+ALTER TABLE `historique_conges`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `log_connexion`
+--
+ALTER TABLE `log_connexion`
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `poste`
@@ -270,6 +353,14 @@ ALTER TABLE `conges`
 ALTER TABLE `employe`
   ADD CONSTRAINT `employe_ibfk_1` FOREIGN KEY (`id_poste`) REFERENCES `poste` (`id_poste`),
   ADD CONSTRAINT `employe_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `service` (`id_service`);
+
+DELIMITER $$
+--
+-- Évènements
+--
+CREATE DEFINER=`root`@`localhost` EVENT `conges_mensuel` ON SCHEDULE EVERY 1 MONTH STARTS '2023-01-01 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE employe SET conges_dispo = conges_dispo + 2.5$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

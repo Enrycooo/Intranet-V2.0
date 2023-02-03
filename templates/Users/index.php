@@ -128,6 +128,20 @@
                         ?>
                         </select>
                     </div>
+                    <div class="col-sm-6 flex-column d-flex">
+                        <label class="form-label select-label">Choisissez l'entité</label>
+                        <select class="select form-control-lg" name="entite" required/>
+                        <option></option>
+                        <?php
+                        foreach($entites as $entite){ 
+                            ?>
+                        <option value="<?= htmlspecialchars($entite->id_entite) ?>">
+                        <?= htmlspecialchars($entite->libelle) ?></option>
+                        <?php
+                        } 
+                        ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 flex-column d-flex">
@@ -143,6 +157,10 @@
                         }
                         ?>
                          </select>
+                    </div>
+                    <div class="col-sm-6 flex-column d-flex"> 
+                        <label class="form-control-label px-3" for="congesdispo">Conges disponible initiaux</label>
+                        <input type="text" id="congesdispo" name='conges_dispo' required/>
                     </div>
                 </div>
             <input type="hidden" name="action" value="create">
@@ -235,6 +253,22 @@
                          </select>
                     </div>
                 </div>
+                <div class='row'>
+                    <div class="col-sm-6 flex-column d-flex">
+                        <label class="form-label select-label">Choisissez l'entité</label>
+                        <select class="select form-control-lg" id='entiteedit' name="entite" required/>
+                        <option></option>
+                        <?php
+                        foreach($entites as $entite){ 
+                            ?>
+                        <option value="<?= htmlspecialchars($entite->id_entite) ?>">
+                        <?= htmlspecialchars($entite->libelle) ?></option>
+                        <?php
+                        } 
+                        ?>
+                        </select>
+                    </div>
+                </div>
           <hr>
                 <div class="row">
                     <div class="col-sm-6 flex-column d-flex">
@@ -286,6 +320,7 @@
                 <th>telephone</th>
                 <th>poste</th>
                 <th>service</th>
+                <th>entite</th>
                 <th>conges dispo</th>
                 <th>Actions</th>
               </tr>
@@ -304,8 +339,10 @@
                     <td data-id="<?= $id_employe ?>"><?= $crud->telephone ?></td>
                     <td data-id="<?= $id_employe ?>"><?= $crud->poste ?></td>
                     <td data-id="<?= $id_employe ?>"><?= $crud->service ?></td>
+                    <td data-id="<?= $id_employe ?>"><?= $crud->entite ?></td>
                     <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_poste ?></td>
                     <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_service ?></td>
+                    <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_entite ?></td>
                     <td data-id="<?= $id_employe ?>"><?= $crud->conges_dispo ?></td>
                     <td>
                         <div class='d-flex text-center'>
@@ -366,10 +403,11 @@
         var cellData2 = row.querySelector("td:nth-child(3)").textContent;
         var cellData3 = row.querySelector("td:nth-child(4)").textContent;
         var cellData4 = row.querySelector("td:nth-child(5)").textContent;
-        var cellData5 = row.querySelector("td:nth-child(9)").textContent;
-        var cellData6 = row.querySelector("td:nth-child(10)").textContent;
+        var cellData5 = row.querySelector("td:nth-child(10)").textContent;
+        var cellData6 = row.querySelector("td:nth-child(11)").textContent;
         var cellData7 = row.querySelector("td:nth-child(6)").textContent;
-        var cellData8 = row.querySelector("td:nth-child(11)").textContent;
+        var cellData8 = row.querySelector("td:nth-child(13)").textContent;
+        var cellData9 = row.querySelector("td:nth-child(12)").textContent;
 
         // Mise des données récupérées dans l'input du modal
         document.querySelector("#nomedit").value = cellData1;
@@ -394,6 +432,14 @@
         var option5 = document.createElement("option");
         option5.textContent = optionValue5;
         option5.value = optionValue5;
+        
+        var optionValue6 = cellData9;
+        var selectInput6 = document.querySelector("#entiteedit");
+        selectInput6.value = optionValue6;
+        var option6 = document.createElement("option");
+        option6.textContent = optionValue6;
+        option6.value = optionValue6;
+        console.log(cellData9);
       });
     });
 </script>

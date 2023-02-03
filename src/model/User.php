@@ -26,11 +26,11 @@ class User_Model
 {
         public DatabaseConnection $connection;
         
-	public function createUser(string $nom, string $prenom, string $username, string $email, string $telephone, string $password, int $id_poste, int $id_service)
+	public function createUser(string $nom, string $prenom, string $username, string $email, string $telephone, string $password, int $id_poste, int $id_service, int $id_entite, string $conges_dispo)
 	{
                 $stmt = $this->connection->getConnection()->prepare(
-                'INSERT INTO employe(nom, prenom, username, email, telephone, password, actif, id_poste, id_service)
-                VALUES(:nom, :prenom, :username, :email, :telephone, :password, 1, :id_poste, :id_service)'
+                'INSERT INTO employe(nom, prenom, username, email, telephone, password, actif, id_poste, id_service, id_entite, conges_dispo)
+                VALUES(:nom, :prenom, :username, :email, :telephone, :password, 1, :id_poste, :id_service, :id_entite, :conges_dispo)'
                 );
                 $stmt->bindValue(':nom', $nom);
                 $stmt->bindValue(':prenom', $prenom);
@@ -40,6 +40,8 @@ class User_Model
                 $stmt->bindValue(':password', $password);
                 $stmt->bindValue(':id_poste', $id_poste);
                 $stmt->bindValue(':id_service', $id_service);
+                $stmt->bindValue(':id_entite', $id_entite);
+                $stmt->bindValue(':conges_dispo', $conges_dispo);
                 $affectedLines = $stmt->execute();
 
                 return ($affectedLines > 0);
@@ -151,9 +153,11 @@ class User_Model
         public function getCrudUsers(){
             $stmt= $this->connection->getConnection()->query("
             SELECT id_employe, E.nom, E.prenom, username, E.email, P.libelle AS poste, 
-            S.libelle AS service, telephone, E.id_service, E.id_poste, conges_dispo
+            S.libelle AS service, telephone, E.id_service, E.id_poste, conges_dispo,
+            E.id_entite, EN.libelle AS entite
             FROM employe E INNER JOIN poste P ON E.id_poste = P.id_poste
             INNER JOIN service S ON E.id_service = S.id_service
+            INNER JOIN entite EN ON E.id_entite = EN.id_entite
             WHERE actif = 1
             ORDER BY id_employe;
             ");
@@ -172,6 +176,8 @@ class User_Model
                 $crud->service = $row['service'];
                 $crud->telephone = $row['telephone'];
                 $crud->conges_dispo = $row['conges_dispo'];
+                $crud->id_entite = $row['id_entite'];
+                $crud->entite = $row['entite'];
 
                 $cruds[] = $crud;
             }
