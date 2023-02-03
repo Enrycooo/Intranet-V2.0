@@ -215,6 +215,7 @@
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type="hidden" name="duree" value="<?=$crud->duree?>">
                                 <input type="hidden" name="id_employe" value="<?=$crud->id_employe?>">
+                                <input type="hidden" name="conges_dispo" value="1">
                                 <input type='hidden' name='id_etat' value='5'>
                                 <button type="submit" class="btn btn-sm btn-warning exclude-cell">Annulée</button>
                                 <input type="hidden" name="action" value="etat">
