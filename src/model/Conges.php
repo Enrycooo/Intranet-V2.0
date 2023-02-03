@@ -110,7 +110,7 @@ class Conges_Model
                 $stmt= $this->connection->getConnection()->query("
                     SELECT id_conges, date_debut, date_fin, commentaire, duree, R.libelle AS raison, 
                     E.libelle AS etat, EM.nom, EM.prenom, C.debut_type, C.fin_type, C.id_raison, C.id_etat,
-                    C.id_employe
+                    C.id_employe, afficher
                     FROM conges C INNER JOIN raison R ON C.id_raison=R.id_raison
                     INNER JOIN etat E ON C.id_etat = E.id_etat
                     INNER JOIN employe EM ON C.id_employe = EM.id_employe
@@ -136,6 +136,7 @@ class Conges_Model
                     $crud->id_raison = $row['id_raison'];
                     $crud->id_etat = $row['id_etat'];
                     $crud->id_employe = $row['id_employe'];
+                    $crud->afficher = $row['afficher'];
                     
                     $cruds[] = $crud;
                 }
@@ -198,6 +199,12 @@ class Conges_Model
             $stmt->execute();
         }
         
+        public function undeleteConges(int $id_conges){
+            $stmt = $this->connection->getConnection()->prepare("UPDATE conges SET afficher = 1 WHERE id_conges = :id_conges");
+            $stmt->bindValue(':id_conges', $id_conges);
+            $stmt->execute();
+        }
+        
         public function updateConges(int $id_conges, int $id_raison, int $id_etat, string $date_debut, string $date_fin, string $debut_type, string $fin_type, string $duree, string $commentaire){
             $stmt = $this->connection->getConnection()->prepare("UPDATE conges SET id_raison = :id_raison, id_etat = :id_etat, date_debut = :date_debut, date_fin = :date_fin, debut_type = :debut_type, 
                                                                 fin_type = :fin_type, duree = :duree, commentaire = :commentaire, date_change = CURRENT_TIMESTAMP
@@ -253,6 +260,14 @@ class Conges_Model
         //Cette fonction va retirer le nombre de jours de conges pris des conges dispo de l'employé
         public function DeleteCongesPris(int $id_employe, string $duree){
             $stmt = $this->connection->getConnection()->prepare("UPDATE employe SET conges_dispo = conges_dispo - :duree
+                                                                WHERE id_employe = :id_employe");
+            $stmt->bindValue(':id_employe', $id_employe);
+            $stmt->bindValue(':duree', $duree);
+            $stmt->execute();
+        }
+        
+        public function AddCongesPris(int $id_employe, string $duree){
+            $stmt = $this->connection->getConnection()->prepare("UPDATE employe SET conges_dispo = conges_dispo + :duree
                                                                 WHERE id_employe = :id_employe");
             $stmt->bindValue(':id_employe', $id_employe);
             $stmt->bindValue(':duree', $duree);

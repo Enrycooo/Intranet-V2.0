@@ -28,9 +28,15 @@ class Login{
                 $users = $userModel->getUser($username,$password);
                 //On envoie $username et $password à la fonction getUser et si la requête retourne
                 //l'array souhaité, alors elle est stocké dans la variable $users
+                echo $password;
+                if($users){
+                    $reussite = 'success';
+                }else{
+                    $reussite = 'failed';
+                }
                 
                 $ip = $_SERVER['REMOTE_ADDR'];
-                $userModel->ConnectionLog($ip, $username);
+                $userModel->ConnectionLog($ip, $username, $reussite);
                 
                 if($users) // nom d'utilisateur et mot de passe correctes
                 {

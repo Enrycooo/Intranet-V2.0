@@ -99,7 +99,7 @@
 <!-- End update modal -->
   <div class="container">
     <div class="row mt-4">
-      <div class="col-lg-10 d-flex justify-content-between align-items-center">
+      <div class="col-lg-11 d-flex justify-content-between align-items-center">
         <div>
           <h4 class="text-primary">Toutes les demandes de congés!</h4>
         </div>
@@ -128,7 +128,7 @@
         </div>
     </center>
     <div class="row">
-      <div class="col-lg-14">
+      <div class="col-lg-16">
         <div class="table-responsive">
           <table class="table table-striped table-bordered text-center" id="table" border="1">
             <thead>
@@ -152,29 +152,46 @@
                 ?>
                 <tr>
                     <td data-id="<?= $id_conges ?>"><?= $id_conges ?></td>
-                    <td data-id="<?= $id_conges ?>"><?= $crud->date_debut ?></td>
-                    <td data-id="<?= $id_conges ?>"><?= $crud->date_fin ?></td>
+                    <td class="col-1" data-id="<?= $id_conges ?>"><?= $crud->date_debut ?></td>
+                    <td class="col-1" data-id="<?= $id_conges ?>"><?= $crud->date_fin ?></td>
                     <td data-id="<?= $id_conges ?>"><?= $crud->debut_type ?></td>
                     <td data-id="<?= $id_conges ?>"><?= $crud->fin_type ?></td>
                     <td data-id="<?= $id_conges ?>"><?= $crud->duree ?></td>
-                    <td data-id="<?= $id_conges ?>"><?= $crud->raison ?></td>
+                    <td class="col-1" data-id="<?= $id_conges ?>"><?= $crud->raison ?></td>
                     <?php
                         if($crud->etat == 'En attente'){echo "<td data-id=".$id_conges."><span class='badge bg-warning'>" . $crud->etat . "</span></td>";}
                         elseif($crud->etat == 'Acceptee'){echo "<td data-id=".$id_conges."><span class='badge bg-success'>" . $crud->etat . "</span></td>";}
                         elseif($crud->etat !== ''){echo "<td data-id=".$id_conges."><span class='badge bg-danger' style='background-color: #ff0000;'>" . $crud->etat . "</span></td>";}
                     ?>
                     <td data-id="<?= $id_conges ?>" hidden><?= $crud->commentaire ?></td>
-                    <td data-id="<?= $id_conges ?>"><?= $crud->nom ." ". $crud->prenom?></td>
+                    <td class="col-1" data-id="<?= $id_conges ?>"><?= $crud->nom ." ". $crud->prenom?></td>
                     <td>
                         <div class='d-flex text-center'>
+                            <?php
+                            if($crud->afficher == 1){
+                            ?>
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
-                                <button type="submit" class="btn btn-sm btn-danger exclude-cell">Supprimer du calendrier</button>
+                                <button type="submit" class="btn btn-sm btn-danger exclude-cell">cacher du calendrier</button>
                                 <input type="hidden" name="action" value="delete">
                             </form>
+                            <?php
+                            }else{
+                            ?>
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <button type="submit" class="btn btn-sm btn-info exclude-cell">montrer dans calendrier</button>
+                                <input type="hidden" name="action" value="undelete">
+                            </form>
+                            <?php
+                            }
+                            ?>
                             &nbsp;
                             <button data-id="<?= $id_conges ?>" type="button" class="btn btn-sm btn-primary update exclude-cell" data-bs-toggle="modal" data-bs-target="#update">Modifier</button>
                             &nbsp;
+                            <?php
+                            if($crud->id_etat == 2){
+                            ?>
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type="hidden" name="id_raison" value="<?=$crud->id_raison?>">
@@ -191,17 +208,42 @@
                                 <button type="submit" class="btn btn-sm btn-warning exclude-cell">Refusée</button>
                                 <input type="hidden" name="action" value="etat">
                             </form>
-                            &nbsp;
+                            <?php
+                            }else if($crud->id_etat == 3){
+                            ?>
+                            <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
+                                <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
+                                <input type="hidden" name="duree" value="<?=$crud->duree?>">
+                                <input type="hidden" name="id_employe" value="<?=$crud->id_employe?>">
+                                <input type='hidden' name='id_etat' value='5'>
+                                <button type="submit" class="btn btn-sm btn-warning exclude-cell">Annulée</button>
+                                <input type="hidden" name="action" value="etat">
+                            </form>
+                            <?php
+                            }else if($crud->id_etat == 4){
+                            ?>
                             <form action='index.php?action=crudconges&id=<?=$id?>' method='post'>
                                 <input type="hidden" name='id_conges' value='<?=$id_conges?>'>
                                 <input type='hidden' name='id_etat' value='5'>
                                 <button type="submit" class="btn btn-sm btn-warning exclude-cell">Annulée</button>
                                 <input type="hidden" name="action" value="etat">
                             </form>
+                            <?php
+                            }else if($crud->id_etat == 5){
+                            ?>
+                            <?php
+                            }
+                            ?>
                             &nbsp;
+                            <?php
+                            if($crud->id_etat !== 2){
+                            ?>
                             <form action='index.php?action=pdf&id=<?=$id?>&id_conges=<?=$id_conges?>' method='post'>
                                   <button type='submit' class='btn btn-sm btn-primary exclude-cell'>Pdf</button>
                             </form>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </td>
                     <td class="exclude-cell" style="display:none;" data-id="<?= $id_conges ?>"><?= $crud->id_raison ?></td>

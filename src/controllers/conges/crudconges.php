@@ -30,7 +30,7 @@ class CrudConges
                 $fin_type = null;
                 $duree = null;
                 $commentaire = null;
-                if (!empty($input['date_debut']) && !empty($input['date_fin']) && !empty($input['debut_type']) && !empty($input['fin_type']) && !empty($input['duree']) && !empty($input['commentaire']) && !empty($input['raison']) && !empty($input['etat'])){
+                if (!empty($input['date_debut']) && !empty($input['date_fin']) && !empty($input['debut_type']) && !empty($input['fin_type']) && !empty($input['duree']) && !empty($input['raison']) && !empty($input['etat'])){
                     $id_conges = $input['id_conges'];
                     $id_raison = $input['raison'];
                     $id_etat = $input['etat'];
@@ -59,6 +59,18 @@ class CrudConges
                 $conges_model->connection = new DatabaseConnection();
                 $conges_model->deleteConges($id_conges);
             }
+        } else if ($action === 'undelete') {
+            if($input !== null){
+                $id_conges = null;
+                if (!empty($input['id_conges'])){
+                    $id_conges = $input['id_conges'];
+                } else {
+                    throw new \Exception('Les données du formulaire sont invalides.');
+                }
+                $conges_model = new Conges_Model();
+                $conges_model->connection = new DatabaseConnection();
+                $conges_model->undeleteConges($id_conges);
+            }
         } else if ($action === 'etat'){
             if($input !== null){
                 $id_conges = null;
@@ -70,7 +82,9 @@ class CrudConges
                     $id_conges = $input['id_conges'];
                     $id_etat = $input['id_etat'];
                     if($id_etat == 3){
-                        $id_raison = $input['id_raison'];
+                        $duree = $input['duree'];
+                        $id_emp = $input['id_employe'];
+                    }else if($id_etat == 5){
                         $duree = $input['duree'];
                         $id_emp = $input['id_employe'];
                     }
@@ -87,6 +101,13 @@ class CrudConges
                         $congesdispo = new Conges_Model();
                         $congesdispo->connection = new DatabaseConnection();
                         $congesdispo->DeleteCongesPris($id_emp, $duree);
+                    }
+                }else if($id_etat == 5){
+                    if($id_raison == 3){
+                    }else{
+                        $congesdispo = new Conges_Model();
+                        $congesdispo->connection = new DatabaseConnection();
+                        $congesdispo->AddCongesPris($id_emp, $duree);
                     }
                 }
             }

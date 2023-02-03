@@ -61,7 +61,8 @@ class CrudUser
                 $password = null;
                 $poste = null;
                 $service = null;
-                if (!empty($input['nom']) && !empty($input['prenom']) && !empty($input['username']) && !empty($input['email']) && !empty($input['telephone']) && !empty($input['password']) && !empty($input['poste']) && !empty($input['service'])){
+                $conges_dispo = null;
+                if (!empty($input['nom']) && !empty($input['prenom']) && !empty($input['username']) && !empty($input['email']) && !empty($input['telephone']) && !empty($input['poste']) && !empty($input['service'])){
                     $id_employe = $input['id_employe'];
                     $nom = $input['nom'];
                     $prenom = $input['prenom'];
@@ -71,12 +72,13 @@ class CrudUser
                     $password = crypt($input['password'],'$6$rounds=5000$gA6Fkf92AFMpn3cGK$');
                     $poste = $input['poste'];
                     $service = $input['service'];
+                    $conges_dispo = $input['conges_dispo'];
                 } else {
                     throw new \Exception('Les données du formulaire sont invalides.');
                 }
                 $user_model = new User_Model();
                 $user_model->connection = new DatabaseConnection();
-                $user_model->updateUser($id_employe, $nom, $prenom, $username, $email, $telephone, $password, $poste, $service);
+                $user_model->updateUser($id_employe, $nom, $prenom, $username, $email, $telephone, $password, $poste, $service, $conges_dispo);
             }
         } else if ($action === 'delete') {
             if($input !== null){
