@@ -406,6 +406,7 @@ if($_SESSION['id_poste'] !== 2){
   <div id='calendar'></div>
   
 <script type="text/javascript">
+    
     function treatAsUTC(date) {
         var result = new Date(date);
         result.setMinutes(result.getMinutes() - result.getTimezoneOffset());

@@ -45,9 +45,12 @@ class Login{
                         $_SESSION['id'] = $users->id_employe;
                         $_SESSION['id_poste'] = $users->id_poste;
                         $_SESSION['id_service'] = $users->id_service;
+                        $_SESSION['id_entite'] = $users->id_entite;
                         $id = $_SESSION['id'];
+                        $entite = $_SESSION['id_entite'];
+                        $_COOKIE['entite'] = $entite;
                         $poste = $_SESSION['id_poste'];
-                        header("Location: index.php?action=connected&id=$id");
+                        header("Location: index.php?action=connected&id=$id&entite=$entite");
                 }else{
                     throw new \Exception('Votre compte est désactivée ou alors le nom d\'utilisateur et/ou le mot de passe sont incorrectes !');
                 }

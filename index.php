@@ -10,12 +10,13 @@ if($_SESSION == null){
     $_SESSION['id']="";
     $_SESSION['id_poste']="";
     $_SESSION['id_service']="";
+    $_SESSION['id_']="";
 }
 
 if($_SESSION['username'] !== "" && $_SESSION['password'] !== "" && $_SESSION['id'] !== ""){
     //Si l'on est connecté et que l'on essaie d'aller sur la page de connexion, on est rediriger sur la
     //page principale
-    header("Location: index.php?action=connected&id=$id");
+    header("Location: index.php?action=connected&id=$id&=$");
 }
 
 //On require tout les controllers
@@ -71,6 +72,7 @@ try {
         }elseif($_GET['action'] === 'connected'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
             (new Navbar())->execute();
                 (new Mainpage())->execute();
@@ -80,6 +82,7 @@ try {
         }elseif($_GET['action'] === 'createConges'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -93,6 +96,7 @@ try {
         }elseif($_GET['action'] === 'createCongesAdmin'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -106,6 +110,7 @@ try {
         }elseif($_GET['action'] === 'crudconges' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                    
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -120,6 +125,7 @@ try {
         }elseif($_GET['action'] === 'crudusers' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -134,6 +140,7 @@ try {
         }elseif($_GET['action'] === 'crudRaison' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -148,6 +155,7 @@ try {
         }elseif($_GET['action'] === 'crudService' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -162,6 +170,7 @@ try {
         }elseif($_GET['action'] === 'crudPoste' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -176,6 +185,7 @@ try {
         }elseif($_GET['action'] === 'crudEntite' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -190,6 +200,7 @@ try {
         }elseif($_GET['action'] === 'crudEtat' && $_SESSION['id_poste'] !== 2){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -204,6 +215,7 @@ try {
         }elseif($_GET['action'] === 'calendarconges'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 $input = null;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -219,6 +231,7 @@ try {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
                 $id_conges = $_GET['id_conges'];
+                 
                 
                 (new PDF())->PDF($id_employe, $id_conges);
             } else {
@@ -227,6 +240,7 @@ try {
         }elseif($_GET['action'] === 'demandedeconges'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 (new Navbar())->execute();
                 (new DemandeConges())->Demande($id_employe);
@@ -236,6 +250,7 @@ try {
         }elseif($_GET['action'] === 'crudhistorique'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 (new Navbar())->execute();
                 (new CrudHistorique())->CRUD($id_employe);
@@ -245,6 +260,7 @@ try {
         }elseif($_GET['action'] === 'infoperso'){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 (new Navbar())->execute();
                 (new InfoPerso())->Info($id_employe);
@@ -254,6 +270,7 @@ try {
         }elseif($_GET['action'] === 'logconnexion' && $_SESSION['id_poste'] == 1){
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $id_employe = $_GET['id'];
+                 
                 
                 (new Navbar())->execute();
                 (new CrudLog())->Crud($id_employe);
@@ -272,7 +289,8 @@ try {
         if($_SESSION['id'] !== ""){
             //si l'on est connecté la page principale de l'intranet
             $id = $_SESSION['id'];
-            header("Location: index.php?action=connected&id=$id");
+            
+            header("Location: index.php?action=connected&id=$id&=$");
         }elseif($_SESSION['id'] == ""){
             //si l'on est pas connecté, sur la page de connexion
             header('Location= index.php');

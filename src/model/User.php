@@ -87,6 +87,7 @@ class User_Model
             $user->id_poste = $row['id_poste'];
             $user->id_employe = $row['id_employe'];
             $user->id_service = $row['id_service'];
+            $user->id_entite  = $row['id_entite'];
 
             return $user;
         }

@@ -1,12 +1,16 @@
 <?php
+session_start();
 include('db.php');
+$id_entite = $_SESSION['id_entite'];
 //J'ai du refaire une connexion à la BDD et des requêtes spéciales pour le calendrier
 //car j'avais des problèmes de lien entre les fichiers et de variable non défini.
 $result = $conn->prepare("SELECT id_conges, date_debut, date_fin, EM.nom AS nom, EM.prenom AS prenom,
                         E.color AS color
                         FROM conges C INNER JOIN employe EM ON C.id_employe = EM.id_employe
                         INNER JOIN etat E ON C.id_etat = E.id_etat
-                        WHERE afficher = 1");
+                        WHERE afficher = 1
+                        AND EM.id_entite = :id_entite");
+$result->bindValue(':id_entite', $id_entite);
 $result->execute();
 $res = $result->fetchALL(PDO::FETCH_OBJ);
 
@@ -23,3 +27,4 @@ foreach($res as $row) {
 
 echo json_encode($data); //json_encode permet d'encoder l'array $data en json pour que fullcalendar puisse
 //l'utiliser. Et le 'echo' est obligatoire
+exit;

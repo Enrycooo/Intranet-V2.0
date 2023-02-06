@@ -11,11 +11,11 @@
       </div>
 
       <!--Body-->
-      <form name="form4" action='index.php?action=crudEtat&id=<?=$id?>' method='post'>
+      <form name="form4" action='index.php?action=crudEntite&id=<?=$id?>' method='post'>
       <div class="modal-body">
         <div class="md-form mb-5">
           <i class="fas fa-user prefix grey-text"></i>
-          <label data-error="wrong" data-success="right" for="form3">Libellé de l'état</label>
+          <label data-error="wrong" data-success="right" for="form3">Libellé de l'entité</label>
           <input type="text" id="form3" class="form-control validate" name='libelle'>
           <input type="hidden" name="action" value="create">
 
@@ -46,11 +46,11 @@
       </div>
 
       <!--Body-->
-      <form name="form4" action='index.php?action=crudEtat&id=<?=$id?>' method='post'>
+      <form name="form4" action='index.php?action=crudEntite&id=<?=$id?>' method='post'>
       <div class="modal-body">
         <div class="md-form mb-5">
           <i class="fas fa-user prefix grey-text"></i>
-          <label data-error="wrong" data-success="right" for="libelleedit">Libellé de l'état</label>
+          <label data-error="wrong" data-success="right" for="libelleedit">Libellé de l'entité</label>
           <input type="text" id="libelleedit" class="form-control validate" name='libelle'>
           <input type="hidden" id="dataId" name="id_entite">
           <input type="hidden" name="action" value="update">
@@ -60,7 +60,7 @@
       <!--Footer-->
       <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-          <button id="saveChanges" type="submit" class="btn btn-primary">Modifier l'état</button>
+          <button id="saveChanges" type="submit" class="btn btn-primary">Modifier l'entité</button>
       </div>
       </form>
     </div>
@@ -72,11 +72,11 @@
     <div class="row mt-4">
       <div class="col-lg-6 d-flex justify-content-between align-items-center">
         <div>
-          <h4 class="text-primary">Tout les états !</h4>
+          <h4 class="text-primary">Toutes les entités !</h4>
         </div>
         <div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
-            Ajouter un nouvelle état
+            Ajouter une nouvelle entité
             </button>
         </div>
       </div>
@@ -89,7 +89,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>États</th>
+                <th>Entité</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -179,7 +179,7 @@ function exportData(){
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Etats-conges"+today+".csv");
+        link.setAttribute("download", "Entité-liste"+today+".csv");
         document.body.appendChild(link);
          /* download the data file named "Stock_Price_Report.csv" */
         link.click();
