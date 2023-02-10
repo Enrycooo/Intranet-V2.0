@@ -47,23 +47,7 @@ class Calendar
                 $conges_model->connection = new DatabaseConnection();
                 $success = $conges_model->updateConges($id_conges, $id_raison, $id_etat, $date_debut, $date_fin, $debut_type, $fin_type, $duree, $commentaire);
             }
-        } else if ($action === 'delete') {
-            if($input !== null){
-                $id_conges = null;
-                if (!empty($input['id_conges'])){
-                    $id_conges = $input['id_conges'];
-                } else {
-                    throw new \Exception('Les données du formulaire sont invalides.');
-                }
-                $conges_model = new Conges_Model();
-                $conges_model->connection = new DatabaseConnection();
-                $conges_model->deleteConges($id_conges);
-            }
         }
-        
-        $calendarmodel = new Conges_Model();
-        $calendarmodel->connection = new DatabaseConnection();
-        $calendars = $calendarmodel->getCalendar();
         
         $raison_model = new Raison_Model();
         $raison_model->connection = new DatabaseConnection();

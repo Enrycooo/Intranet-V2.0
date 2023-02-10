@@ -28,7 +28,6 @@ class Login{
                 $users = $userModel->getUser($username,$password);
                 //On envoie $username et $password à la fonction getUser et si la requête retourne
                 //l'array souhaité, alors elle est stocké dans la variable $users
-                echo $password;
                 if($users){
                     $reussite = 'success';
                 }else{
@@ -49,8 +48,7 @@ class Login{
                         $id = $_SESSION['id'];
                         $entite = $_SESSION['id_entite'];
                         $_COOKIE['entite'] = $entite;
-                        $poste = $_SESSION['id_poste'];
-                        header("Location: index.php?action=connected&id=$id&entite=$entite");
+                        header("Location: index.php?action=connected&id=$id");
                 }else{
                     throw new \Exception('Votre compte est désactivée ou alors le nom d\'utilisateur et/ou le mot de passe sont incorrectes !');
                 }
