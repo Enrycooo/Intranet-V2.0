@@ -107,7 +107,8 @@ class User_Model
         public function getCrudLog(){
             $stmt = $this->connection->getConnection()->prepare("
                                             SELECT id_log, date_connexion, ip_adress, username
-                                            FROM log_connexion");
+                                            FROM log_connexion
+                                            ORDER BY date_connexion DESC");
             $stmt->execute();
             
             $cruds = [];
