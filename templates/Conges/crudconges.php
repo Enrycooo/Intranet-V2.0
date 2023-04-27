@@ -339,7 +339,7 @@
         var cellData5 = row.querySelector("td:nth-child(6)").textContent;
         var cellData6 = row.querySelector("td:nth-child(12)").textContent;
         var cellData7 = row.querySelector("td:nth-child(13)").textContent;
-        var cellData8 = row.querySelector("td:nth-child(9)").textContent;
+        var cellData8 = row.querySelector("td:nth-child(10)").textContent;
         //Envoie des dates au modal
         //du à des problème de format de date, nous utilisons moment.js
         //une librairie JS pour les format de date
@@ -353,9 +353,6 @@
         dateInput.value = dataDate.toISOString().slice(0 ,16);
         var dateInput2 = document.querySelector("#date_fin");
         dateInput2.value = dataDate2.toISOString().slice(0 ,16);
-        
-        console.log(dataDate);
-        console.log(dataDate2);
         
         //Envoie des options de temps au modal
         var optionValue = cellData3;

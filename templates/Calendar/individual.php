@@ -415,11 +415,11 @@ if($_SESSION['id_poste'] !== 2){
     
     setTimeout(difference,1000);
     function difference(){
-        setTimeout(difference,1000);
+            setTimeout(difference,1000);
         var time = document.querySelector('#time').selectedIndex;
         var time2 = document.querySelector('#time2').selectedIndex;
-        var date1 = new Date(document.querySelector('#event-start').value);
-        var date2 = new Date(document.querySelector('#event-end').value);
+        var date1 = new Date(document.querySelector('#date_debut').value);
+        var date2 = new Date(document.querySelector('#date_fin').value);
         var millisecondsPerDay = 24 * 60 * 60 * 1000;
         const diffDays = ((treatAsUTC(date2) - treatAsUTC(date1)) / millisecondsPerDay);
         
@@ -453,8 +453,8 @@ if($_SESSION['id_poste'] !== 2){
             days = (days - 0.5);
         }
         
-        document.querySelector('#duree').value = days + 1;
-    }
+        document.querySelector('#duration').value = days + 1;
+        }
 </script>
 <?php $content = ob_get_clean(); ?>
 <?php require('templates/layout.php') ?>

@@ -105,7 +105,7 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial','BU',12);
-$pdf->Cell(190,6,' Nature du conge :',0,0);
+$pdf->Cell(190,6,' Nature du congé :',0,0);
     $raison = $model->id_raison;
     $motif = $model->raison;
     $date_debut = date("d-m-Y H:i", strtotime($model->date_debut));
