@@ -323,6 +323,9 @@
                 <th>entite</th>
                 <th>conges dispo</th>
                 <th>Actions</th>
+                <th style="display:none;">id</th>
+                <th style="display:none;">id</th>
+                <th style="display:none;">id</th>
               </tr>
             </thead>
             <tbody>
@@ -340,10 +343,10 @@
                     <td data-id="<?= $id_employe ?>"><?= $crud->poste ?></td>
                     <td data-id="<?= $id_employe ?>"><?= $crud->service ?></td>
                     <td data-id="<?= $id_employe ?>"><?= $crud->entite ?></td>
+                    <td data-id="<?= $id_employe ?>"><?= $crud->conges_dispo ?></td>
                     <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_poste ?></td>
                     <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_service ?></td>
                     <td style="display:none;" data-id="<?= $id_employe ?>"><?= $crud->id_entite ?></td>
-                    <td data-id="<?= $id_employe ?>"><?= $crud->conges_dispo ?></td>
                     <td>
                         <div class='d-flex text-center'>
                             <button data-id="<?= $id_employe ?>" type="button" class="btn btn-sm btn-primary update" data-bs-toggle="modal" data-bs-target="#update">Modifier</button>
@@ -403,11 +406,11 @@
         var cellData2 = row.querySelector("td:nth-child(3)").textContent;
         var cellData3 = row.querySelector("td:nth-child(4)").textContent;
         var cellData4 = row.querySelector("td:nth-child(5)").textContent;
-        var cellData5 = row.querySelector("td:nth-child(10)").textContent;
-        var cellData6 = row.querySelector("td:nth-child(11)").textContent;
+        var cellData5 = row.querySelector("td:nth-child(11)").textContent;
+        var cellData6 = row.querySelector("td:nth-child(12)").textContent;
         var cellData7 = row.querySelector("td:nth-child(6)").textContent;
-        var cellData8 = row.querySelector("td:nth-child(13)").textContent;
-        var cellData9 = row.querySelector("td:nth-child(12)").textContent;
+        var cellData8 = row.querySelector("td:nth-child(10)").textContent;
+        var cellData9 = row.querySelector("td:nth-child(13)").textContent;
 
         // Mise des données récupérées dans l'input du modal
         document.querySelector("#nomedit").value = cellData1;
@@ -444,59 +447,32 @@
     });
 </script>
 <script type="text/javascript">
-function exportData(){
-    /* Get the date of today for the file */
-    let today = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-    today = today.toLocaleDateString('fr-FR', options);
-    
-    /* Get the HTML data using Element by Id */
-    var table = document.getElementById("table");
- 
-    /* Declaring array variable */
-    var rows =[];
- 
-      //iterate through rows of table
-    for(var i=0,row; row = table.rows[i];i++){
-        //rows would be accessed using the "row" variable assigned in the for loop
-        //Get each cell value/column from the row
-        column1 = row.cells[0].innerText;
-        column2 = row.cells[1].innerText;
-        column3 = row.cells[2].innerText;
-        column4 = row.cells[3].innerText;
-        column5 = row.cells[4].innerText;
-        column6 = row.cells[5].innerText;
-        column7 = row.cells[6].innerText;
- 
-    /* add a new records in the array */
-        rows.push(
-            [
-                column1,
-                column2,
-                column3,
-                column4,
-                column5,
-                column6,
-                column7
-            ]
-        );
- 
-        }
-        csvContent = "data:text/csv;charset=utf-8,";
-         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-        rows.forEach(function(rowArray){
-            row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
- 
-        /* create a hidden <a> DOM node and set its download attribute */
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Liste-Users-"+today+".csv");
-        document.body.appendChild(link);
-         /* download the data file named "Stock_Price_Report.csv" */
-        link.click();
+function exportData() {
+  /* Get the date of today for the file */
+  let today = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+  today = today.toLocaleDateString('fr-FR', options);
+
+  /* Get the HTML data using Element by Id */
+  var table = document.getElementById("table");
+
+  /* Filter the table rows to exclude the last two columns */
+  var rows = Array.from(table.rows).map(row => {
+    var cells = Array.from(row.cells).slice(0, -4); // Remove the last two cells
+    return cells.map(cell => cell.innerText);
+  });
+
+  /* Create a new workbook */
+  var workbook = XLSX.utils.book_new();
+
+  /* Add the filtered rows to a new worksheet */
+  var worksheet = XLSX.utils.sheet_add_aoa(XLSX.utils.json_to_sheet(rows), []);
+
+  /* Add the worksheet to the workbook */
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  /* Save the workbook as an Excel file */
+  XLSX.writeFile(workbook, "liste-utilisateur"+today+".xlsx");
 }
 </script>
 <?php $content = ob_get_clean(); ?>
